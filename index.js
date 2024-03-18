@@ -1,19 +1,36 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 app.use(express.json());
 
-app.post('/bfhl',(req,res)=>{
+app.post("/bfhl", (req, res) => {
   const data = req.body.data;
 
-  const evenNumber = data.filter(item => item % 2 === 0)
-  const oddNumber = data.filter(item => item % 2 !== 0)
+  try {
+    if (!data || !Array.isArray(data)) {
+      res.status(400).send("Invalid data");
+      return;
+    }
+    const evenNumber = data.filter((item) => item % 2 === 0);
+    const oddNumber = data.filter((item) => item % 2 !== 0);
 
-  const alphabet = data.filter(item => item.match(/[a-zA-Z]/).test(item));
-  const alphabets = alphabet.map(item => item.toUpperCase());
+    const alphabet1 = data.filter(item.match(/[a-zA-Z]/));
+    const alphabets = alphabet1.map((item) => item.toUpperCase());
 
-  app.listen(3000,()=>{
-    console.log('server working on host 3000')
-  })
-  
-})
+    ("");
+    res.status(200).json({
+      status:"true",
+      user_id:"john_doe_17091999",email:"john@xyz.com",
+      roll_number:"ABCD123",
+      odd_numbers:oddNumber,
+      even_numbers:evenNumber,
+      alaphabet:alphabets,
+    })
+  } catch (error) {
+    console.log(err);
+    res.status(500).send("internal server error");
+  }
+});
+app.listen(3000, () => {
+  console.log("server working on host 3000");
+});
